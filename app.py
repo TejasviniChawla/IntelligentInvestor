@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify, render_template_string
-import llm_for_qa 
+import llm_for_qa
 import markdown
-
+import multiprocessing
+from gunicorn.app.wsgiapp import WSGIApplication
 
 app = Flask(__name__)
 
@@ -239,3 +240,25 @@ def ask_question():
         return jsonify({'answer': answer_html})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+def run(host='0.0.0.0', port=8080, workers=1 + (multiprocessing.cpu_count() * 2)):
+    """Run the app with Gunicorn."""
+    if app.debug:
+        app.run(host, int(port), use_reloader=False)
+    else:
+        gunicorn = WSGIApplication()
+        gunicorn.load_wsgiapp = lambda: app
+        gunicorn.cfg.set('bind', '%s:%s' % (host, port))
+        gunicorn.cfg.set('workers', workers)
+        gunicorn.cfg.set('threads', workers)  # Match threads to workers
+        gunicorn.cfg.set('pidfile', None)
+        gunicorn.cfg.set('worker_class', 'sync')
+        gunicorn.cfg.set('keepalive', 10)
+        gunicorn.cfg.set('accesslog', '-')
+        gunicorn.cfg.set('errorlog', '-')
+        gunicorn.cfg.set('reload', True)
+        gunicorn.chdir()
+        gunicorn.run()
+
+if __name__ == "__main__":
+    run()
