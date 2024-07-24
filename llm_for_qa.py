@@ -62,24 +62,6 @@ Other Tools in PyPDF2:
 import pinecone
 
 
-def extract_text_from_pdf(pdf_path):
-  reader= PdfReader(pdf_path)
-  text=""
-  for page in reader.pages:
-        text += page.extract_text()
-  return text
-
-pdf_text = extract_text_from_pdf('The Intelligent Investor - BENJAMIN GRAHAM.pdf')
-
-# print(pdf_text[0:50])
-
-def split_text_into_chunks(text, chunk_size=512):
-    words = text.split()
-    chunks = [' '.join(words[i:i + chunk_size]) for i in range(0, len(words), chunk_size)]
-    return chunks
-
-text_chunks = split_text_into_chunks(pdf_text)
-
 import os
 from pinecone import Pinecone, ServerlessSpec
 
