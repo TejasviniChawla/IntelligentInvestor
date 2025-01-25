@@ -45,7 +45,6 @@ from transformers import pipeline, AutoTokenizer, AutoModelForQuestionAnswering,
 
 """
 
-from PyPDF2 import PdfReader
 
 """This line imports the PdfReader class from the PyPDF2 library
 
@@ -66,7 +65,7 @@ import os
 from pinecone import Pinecone, ServerlessSpec
 
 pc = Pinecone(
-    api_key='234d75df-1248-42e1-b908-a0e2d80513ae' )
+    api_key='pcsk_mGRoN_3nJPcuiFydT9VSJSkvgnRFiq92eAxVeWvBBx7aJ82K2pyMsmMrPhwXF1dfTJX4b' )
 
 
 
@@ -105,7 +104,7 @@ for i, embedding in enumerate(embeddings):
 
 import google.generativeai as genai
 
-genai.configure(api_key='AIzaSyCjllNUu9M83w3yYxWIhezapaahx87ebfs')
+genai.configure(api_key='AIzaSyD8BhPUSV5Vwe08AXONoqzFrxJBs6z9EIM')
 gmodel = genai.GenerativeModel('gemini-1.5-flash')
 
 def query_bot(question):
